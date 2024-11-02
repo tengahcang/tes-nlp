@@ -1,5 +1,7 @@
 import pandas as pd
 import re
+import json
+import string
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # Membuat stemmer dari Sastrawi
@@ -26,6 +28,19 @@ def preprocess_text(text, slang_dict, stemmer):
 
     # Hilangkan tanda baca
     text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'@\w+\s*', '', text)  # Hapus mention
+    text = re.sub(r'https?://\S+', '', text)  # Hapus link
+    text = re.sub(r'https?://\S+|www\.\S+|http\w+', '', text)  # Hapus link termasuk variasi tanpa spasi
+    text = re.sub('\[.*?\]', ' ', text)
+    text = re.sub('\(.*?\)', ' ', text)
+    text = re.sub('[%s]' % re.escape(string.punctuation), ' ', text)  # Hapus tanda baca
+    text = re.sub('\w*\d\w*', ' ', text)
+    text = re.sub('[‘’“”…♪♪]', '', text)  # Hapus karakter spesial
+    text = re.sub('\n', ' ', text)
+    text = re.sub('\xa0', ' ', text)
+    text = re.sub('b ', ' ', text)
+    text = re.sub('rt ', ' ', text)
+    text = re.sub(r'\s+', ' ', text)
 
     # Tokenisasi manual
     tokens = simple_tokenize(text)
@@ -37,14 +52,24 @@ def preprocess_text(text, slang_dict, stemmer):
     return ' '.join(tokens)
 
 # Tambahkan dictionary slang yang diinginkan
-slang_dict = {
-    "gak": "tidak",
-    "ga": "tidak",
-    "nggak": "tidak",
-    "g": "tidak",
-    "kagak": "tidak",
-    "enggak": "tidak",
-}
+# slang_dict = {
+#     "gak": "tidak",
+#     "ga": "tidak",
+#     "nggak": "tidak",
+#     "g": "tidak",
+#     "kagak": "tidak",
+#     "enggak": "tidak",
+# }
+
+def load_slang_dict(file_txt):
+    # Now open the downloaded file and load it as a dictionary
+    with open(file_txt, 'r', encoding='utf-8') as file:
+        slang_dict = json.load(file)
+
+    return slang_dict
+
+slang_path = 'slang_abbrevations_words.txt'
+slang_dict = load_slang_dict(slang_path)
 
 # Load data dari 'full_text_output.csv'
 path = 'full_text_output.csv'  # Ini file yang sudah Anda buat sebelumnya
