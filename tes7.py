@@ -28,18 +28,3 @@ for word in words_to_check:
         print(f"Kata '{word}' tidak ditemukan dalam lexicon.")
 
 
-tokens = word_tokenize(preprocessed_text)
-for i in range(len(tokens)):
-  print("kata: ", tokens[i])
-  score = senti_indo.polarity_scores(tokens[i])
-  if tokens[i] in senti_indo.lexicon:
-    print("nilai lexicon: ",  senti_indo.lexicon[tokens[i]])
-  else:
-    print("nilai lexicon: 0")
-  print("score negatif: ", score['neg'])
-  print("score netral: ", score['neu'])
-  print("score positif: ", score['pos'])
-  print("score compound: ", score['compound'])
-
-score = senti_indo.polarity_scores(preprocessed_text)
-print(score)
