@@ -32,9 +32,9 @@ X = vectorizer.fit_transform(texts)
 # Bagi data menjadi data latih dan uji
 X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.25, random_state=42)
 
-# Model SVM dengan kernel linear
-model = SVC(kernel='linear', C=1.0)
-model.fit(X_train, y_train)
+# # Model SVM dengan kernel linear
+# model = SVC(kernel='linear', C=1.0)
+# model.fit(X_train, y_train)
 
 # Prediksi dan evaluasi
 # y_pred = model.predict(X_test)
@@ -82,3 +82,21 @@ knn_clf.fit(X_train, y_train)
 y_pred_knn = knn_clf.predict(X_test)
 print("Akurasi:", accuracy_score(y_test, y_pred_knn))
 print(classification_report(y_test, y_pred_knn, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+
+
+df_test = data.iloc[y_test.index].copy()  # Menggunakan index yang sama dengan data uji
+
+# Menambah kolom untuk setiap hasil prediksi model
+df_test['predicted_label_svm'] = y_pred_svm
+df_test['predicted_label_log_reg'] = y_pred_log_reg
+df_test['predicted_label_rf'] = y_pred_rf
+df_test['predicted_label_nb'] = y_pred_nb
+df_test['predicted_label_knn'] = y_pred_knn
+
+# Menampilkan DataFrame dengan kolom baru
+print(df_test.head())
+
+# Menyimpan DataFrame ke file CSV jika diperlukan
+output_file_path = 'hasil_prediksi_berbagai_model.csv'  # Tentukan path untuk file output
+df_test.to_csv(output_file_path, index=False)
+print(f"Hasil prediksi telah disimpan ke {output_file_path}")
