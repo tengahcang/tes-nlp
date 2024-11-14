@@ -55,3 +55,6 @@ df['label_sentiment_numbered'] = label_lexicon
 df.to_csv('data_lexicon_labeled_numbered.csv', index=False)
 
 print("Proses selesai! Hasil sentimen telah disimpan di 'data_lexicon_labeled_numbered.csv'")
+
+
+print(df['label_sentiment_numbered'].value_counts())

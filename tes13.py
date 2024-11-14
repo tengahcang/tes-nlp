@@ -3,6 +3,10 @@ import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
 # Pastikan resource ini sudah diunduh
@@ -33,6 +37,48 @@ model = SVC(kernel='linear', C=1.0)
 model.fit(X_train, y_train)
 
 # Prediksi dan evaluasi
-y_pred = model.predict(X_test)
-print("Akurasi:", accuracy_score(y_test, y_pred))
-print(classification_report(y_test, y_pred, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+# y_pred = model.predict(X_test)
+# print("Akurasi:", accuracy_score(y_test, y_pred))
+# print(classification_report(y_test, y_pred, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+
+
+
+# 1. SVM (Support Vector Machine)
+print("Support Vector Machine (SVM)")
+svm_clf = SVC(kernel='linear', C=1.0)
+svm_clf.fit(X_train, y_train)
+y_pred_svm = svm_clf.predict(X_test)
+print("Akurasi:", accuracy_score(y_test, y_pred_svm))
+print(classification_report(y_test, y_pred_svm, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+
+# 2. Logistic Regression
+print("\nLogistic Regression")
+log_reg = LogisticRegression(max_iter=1000)
+log_reg.fit(X_train, y_train)
+y_pred_log_reg = log_reg.predict(X_test)
+print("Akurasi:", accuracy_score(y_test, y_pred_log_reg))
+print(classification_report(y_test, y_pred_log_reg, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+
+# 3. Random Forest Classifier
+print("\nRandom Forest Classifier")
+rf_clf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_clf.fit(X_train, y_train)
+y_pred_rf = rf_clf.predict(X_test)
+print("Akurasi:", accuracy_score(y_test, y_pred_rf))
+print(classification_report(y_test, y_pred_rf, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+
+# 4. Naive Bayes Classifier (MultinomialNB)
+print("\nNaive Bayes Classifier")
+nb_clf = MultinomialNB()
+nb_clf.fit(X_train, y_train)
+y_pred_nb = nb_clf.predict(X_test)
+print("Akurasi:", accuracy_score(y_test, y_pred_nb))
+print(classification_report(y_test, y_pred_nb, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
+
+# 5. K-Nearest Neighbors (KNN)
+print("\nK-Nearest Neighbors (KNN)")
+knn_clf = KNeighborsClassifier(n_neighbors=5)
+knn_clf.fit(X_train, y_train)
+y_pred_knn = knn_clf.predict(X_test)
+print("Akurasi:", accuracy_score(y_test, y_pred_knn))
+print(classification_report(y_test, y_pred_knn, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
