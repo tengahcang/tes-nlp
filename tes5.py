@@ -68,7 +68,7 @@ def load_slang_dict(file_txt):
 
     return slang_dict
 
-slang_path = 'slang_abbrevations_words.txt'
+slang_path = 'slank_word_dictionary.txt'
 slang_dict = load_slang_dict(slang_path)
 
 # Load data dari 'full_text_output.csv'

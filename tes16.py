@@ -4,12 +4,8 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
-
 
 
 # Pastikan resource ini sudah diunduh
@@ -30,20 +26,11 @@ labels = data['label_sentiment'].astype(int)  # Pastikan label berupa angka
 
 # Vektorisasi teks menggunakan TF-IDF
 vectorizer = TfidfVectorizer()
+# print(vectorizer)
 X = vectorizer.fit_transform(texts)
-
+# print(X)
 # Bagi data menjadi data latih dan uji
 X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.20, random_state=42)
-
-# # Model SVM dengan kernel linear
-# model = SVC(kernel='linear', C=1.0)
-# model.fit(X_train, y_train)
-
-# Prediksi dan evaluasi
-# y_pred = model.predict(X_test)
-# print("Akurasi:", accuracy_score(y_test, y_pred))
-# print(classification_report(y_test, y_pred, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
-
 
 
 # 1. SVM (Support Vector Machine)
@@ -54,13 +41,6 @@ y_pred_svm = svm_clf.predict(X_test)
 print("Akurasi:", accuracy_score(y_test, y_pred_svm))
 print(classification_report(y_test, y_pred_svm, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
 
-# 2. Logistic Regression
-# print("\nLogistic Regression")
-# log_reg = LogisticRegression(max_iter=1000)
-# log_reg.fit(X_train, y_train)
-# y_pred_log_reg = log_reg.predict(X_test)
-# print("Akurasi:", accuracy_score(y_test, y_pred_log_reg))
-# print(classification_report(y_test, y_pred_log_reg, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
 
 # 3. Random Forest Classifier
 print("\nRandom Forest Classifier")
@@ -70,31 +50,11 @@ y_pred_rf = rf_clf.predict(X_test)
 print("Akurasi:", accuracy_score(y_test, y_pred_rf))
 print(classification_report(y_test, y_pred_rf, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
 
-# # 4. Naive Bayes Classifier (MultinomialNB)
-# print("\nNaive Bayes Classifier")
-# nb_clf = MultinomialNB()
-# nb_clf.fit(X_train, y_train)
-# y_pred_nb = nb_clf.predict(X_test)
-# print("Akurasi:", accuracy_score(y_test, y_pred_nb))
-# print(classification_report(y_test, y_pred_nb, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
-
-# # 5. K-Nearest Neighbors (KNN)
-# print("\nK-Nearest Neighbors (KNN)")
-# knn_clf = KNeighborsClassifier(n_neighbors=5)
-# knn_clf.fit(X_train, y_train)
-# y_pred_knn = knn_clf.predict(X_test)
-# print("Akurasi:", accuracy_score(y_test, y_pred_knn))
-# print(classification_report(y_test, y_pred_knn, labels=[0, 1, 2], target_names=["Negatif", "Netral", "Positif"], zero_division=0))
-
-
 df_test = data.iloc[y_test.index].copy()  # Menggunakan index yang sama dengan data uji
 
-# Menambah kolom untuk setiap hasil prediksi model
 df_test['predicted_label_svm'] = y_pred_svm
-# df_test['predicted_label_log_reg'] = y_pred_log_reg
 df_test['predicted_label_rf'] = y_pred_rf
-# df_test['predicted_label_nb'] = y_pred_nb
-# df_test['predicted_label_knn'] = y_pred_knn
+
 
 # Menampilkan DataFrame dengan kolom baru
 print(df_test.head())
@@ -104,30 +64,30 @@ output_file_path = 'hasil_prediksi_berbagai_model.csv'  # Tentukan path untuk fi
 df_test.to_csv(output_file_path, index=False)
 print(f"Hasil prediksi telah disimpan ke {output_file_path}")
 
-
-
-
-
 # Path untuk menyimpan model
 svm_model_path = "svm_model.pkl"
 
 # Simpan model SVM ke file pickle
-with open(svm_model_path, 'wb') as model_file:
-    pickle.dump(svm_clf, model_file)
+with open(svm_model_path, 'wb') as svm_model_file:
+    pickle.dump(svm_clf, svm_model_file)
 
 print(f"Model SVM telah disimpan ke {svm_model_path}")
 
 
+# Path untuk menyimpan model
+rf_model_path = "rf_model.pkl"
 
+# Simpan model SVM ke file pickle
+with open(rf_model_path, 'wb') as rf_model_file:
+    pickle.dump(rf_clf, rf_model_file)
 
-with open(svm_model_path, 'rb') as model_file:
-    loaded_svm_model = pickle.load(model_file)
+print(f"Model Random Forest Classifier telah disimpan ke {rf_model_path}")
 
-print("Model SVM telah berhasil dimuat kembali!")
+# Path untuk menyimpan model
+vectorizer_model_path = "vectorizer_model.pkl"
 
-# Contoh prediksi menggunakan model yang dimuat
-sample_texts = ["Teks ini sangat positif!", "Teks ini netral.", "Teks ini negatif."]
-sample_features = vectorizer.transform(sample_texts)  # Vektorisasi teks baru
-predictions = loaded_svm_model.predict(sample_features)
+# Simpan model SVM ke file pickle
+with open(vectorizer_model_path, 'wb') as vectorizer_model_file:
+    pickle.dump(vectorizer, vectorizer_model_file)
 
-print("Hasil prediksi:", predictions)
+print(f"Model vectorizer telah disimpan ke {vectorizer_model_path}")
