@@ -4,35 +4,26 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 import re
 
-# Unduh lexicon VADER
 nltk.download('vader_lexicon')
 
-# Path ke file lexicon bahasa Indonesia
-path = 'sentiwords_id.txt'  # Pastikan file ini sudah ada
+path = 'sentiwords_id.txt'
 df_senti = pd.read_csv(path, sep=':', names=['word', 'value'])
 
-# Buat dictionary dari lexicon bahasa Indonesia
 senti_dict = {row['word']: float(row['value']) for _, row in df_senti.iterrows()}
 
-# Inisialisasi Stemmer dari Sastrawi
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
 
-# Inisialisasi SentimentIntensityAnalyzer dan update lexicon-nya
 senti_indo = SentimentIntensityAnalyzer()
 senti_indo.lexicon.update(senti_dict)
 
-# Load data dari 'preprocessed_text_output.csv'
-df = pd.read_csv('preprocessed_text_output.csv')  # Pastikan file ini sudah ada
+df = pd.read_csv('preprocessed_text_output.csv')
 
-# List untuk menyimpan hasil sentimen
 label_lexicon = []
 
-# Fungsi untuk tokenisasi menggunakan regex
 def tokenize(text):
     return re.findall(r'\w+', text)
 
-# Iterasi melalui setiap baris di DataFrame
 for index, row in df.iterrows():
     # Stemming pada teks
     stemmed_text = stemmer.stem(row['preprocessed_text'])

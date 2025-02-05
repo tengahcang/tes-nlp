@@ -87,7 +87,6 @@ def plot_learning_curve_with_loss(model, X_train, y_train, model_name):
     plt.ylabel("Accuracy")
     plt.legend(loc="best")
 
-    # Plot Training and Validation Loss
     plt.subplot(1, 2, 2)
     plt.plot(train_sizes, train_loss, label="Training Loss", color="blue")
     plt.plot(train_sizes, test_loss, label="Validation Loss", color="green")

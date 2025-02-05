@@ -15,7 +15,7 @@ with open(vectorizer_path, 'rb') as vectorizer_file:
     loaded_vectorizer = pickle.load(vectorizer_file)
 print("Vectorizer telah berhasil dimuat kembali!")
 
-# Contoh prediksi menggunakan model dan vectorizer yang dimuat
+
 sample_texts = ["kurikulum merdeka itu letak merdeka mana ya"]
 sample_features = loaded_vectorizer.transform(sample_texts)  # Vektorisasi teks baru
 predictions = loaded_svm_model.predict(sample_features)

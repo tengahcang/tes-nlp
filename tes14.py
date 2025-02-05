@@ -24,7 +24,7 @@ undersampled_data = pd.DataFrame({
     'label_sentiment': y_resampled
 })
 
-# 5. Menyimpan hasil ke file baru
+
 undersampled_data.to_csv("undersampled_data.csv", index=False)
 
 print("Data sebelum undersampling:")

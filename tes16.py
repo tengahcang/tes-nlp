@@ -74,7 +74,7 @@ with open(svm_model_path, 'wb') as svm_model_file:
 print(f"Model SVM telah disimpan ke {svm_model_path}")
 
 
-# Path untuk menyimpan model
+
 rf_model_path = "rf_model.pkl"
 
 # Simpan model SVM ke file pickle
